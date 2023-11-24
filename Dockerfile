@@ -31,10 +31,14 @@ COPY /scripts ~/docker-dev/scripts
 # Make ZSH the default shell
 RUN chsh -s $(which zsh)
 
-# Install oh-my-zsh and set as default (using yes)
+# Install oh-my-zsh and set as default (yes answers 'y' to all prompts)
 RUN sh -c "$(yes | curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# Install p10k theme
+# Plugins for oh-my-zsh
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+# Powerlevel10k theme
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 
@@ -43,8 +47,6 @@ RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTO
 # ===========================================
 RUN git clone https://github.com/bfordAIMS/.dotfiles ~/.dotfiles
 RUN bash ~/.dotfiles/scripts/setup_dotfiles.sh
-
-
 
 
 # ===========================================
