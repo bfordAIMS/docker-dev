@@ -1,6 +1,9 @@
-## Get R version 4.3.2
-FROM rocker/r-ver:4.3.2
+# ===========================================
+#                  SYSTEM
+# ===========================================
 
+## Get R version 4.3.2 in ubuntu linux
+FROM rocker/r-ver:4.3.2
 
 # Install required programs
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -11,30 +14,32 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   # libtiff5-dev \
   # libjpeg-dev \
   # libgdal-dev \
-  pandoc \
-  python3-pip
-
-# Install radian R console
-RUN pip3 install -U radian
+  curl \
+  git \
+  pandoc \         
+  python3-pip \
+  zsh
 
 # Copy across scripts need to setup docker-dev
 RUN mkdir ~/docker-dev
 COPY /scripts ~/docker-dev/scripts
 
+# ===========================================
+#                   ZSH
+# ===========================================
+
+# Make ZSH the default shell
+RUN chsh -s $(which zsh)
+
+# Install oh-my-zsh and set as default (using yes)
+RUN sh -c "$(yes | curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# ===========================================
+#                    R
+# ===========================================
+
+# Install radian R console
+RUN pip3 install -U radian
+
 # Install R packages
 RUN Rscript /~/docker-dev/scripts/R/install_packages.R
-
-# ## Create project directory in docker image
-# RUN mkdir ~/tides
-
-# ## Copy scripts and parameters (folders and contents) into docker image project directory
-# COPY harmonics/ ~/tides/harmonics/
-# COPY R/ ~/tides/R/
-# COPY scripts/ ~/tides/scripts
-# WORKDIR ~/tides/
-
-# # Install Xtide (using external script)
-# RUN bash scripts/install_xtide.sh
-
-# ## Start radian R console on container startup
-# CMD radian
