@@ -34,6 +34,19 @@ RUN chsh -s $(which zsh)
 # Install oh-my-zsh and set as default (using yes)
 RUN sh -c "$(yes | curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+# Install p10k theme
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+
+# ===========================================
+#                 DOTFILES
+# ===========================================
+RUN git clone https://github.com/bfordAIMS/.dotfiles ~/.dotfiles
+RUN bash ~/.dotfiles/scripts/setup_dotfiles.sh
+
+
+
+
 # ===========================================
 #                    R
 # ===========================================
@@ -42,4 +55,4 @@ RUN sh -c "$(yes | curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/
 RUN pip3 install -U radian
 
 # Install R packages
-RUN Rscript /~/docker-dev/scripts/R/install_packages.R
+# RUN Rscript /~/docker-dev/scripts/R/install_packages.R
