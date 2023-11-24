@@ -46,7 +46,7 @@ RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTO
 #                 DOTFILES
 # ===========================================
 RUN git clone https://github.com/bfordAIMS/.dotfiles ~/.dotfiles
-RUN bash ~/.dotfiles/scripts/setup_dotfiles.sh
+RUN bash ~/.dotfiles/scripts/link_dotfiles.sh
 
 
 # ===========================================
